@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Register</title>
+    <link rel="stylesheet" type="text/css" href="default.css" media="screen"><!-- default.css에서 지정한 대로 html 요소를 꾸며줄 수 있다-->
+    <script>
+    function joinchk() {
+
+      var login_id  = document.getElementById("id");   //html 에서 설정한 id값을 변수login_id 에 저장
+      var login_pw  = document.getElementById("password");
+      var login_pw2  = document.getElementById("password_chk");
+      var login_name  = document.getElementById("name");
+      var login_pnum  = document.getElementById("pnum");
+      var login_email = document.getElementById("email");
+      var login_accb = document.getElementById("accountbank");
+      var login_accn = document.getElementById("account");
+      var login_birth = document.getElementById("birthday");
+
+
+      if(login_id.value == ""){
+        document.getElementById("id").innerHTML = "아이디를 입력하세요";
+        login_id.focus();
+        return;
+      }
+
+      for (var i = 0; i < login_id.value.length; i++) {
+        ch = login_id.value.charAt(i)
+        if (!(ch >= '0' && ch <= '9') && !(ch >= 'a' && ch <= 'z') && !(ch >= 'A' && ch <= 'Z') && !(ch == '_')) {
+          document.getElementById("id").innerHTML = "아이디는 대소문자 및 숫자, 특수문자(_)만 사용 가능합니다.";
+          login_id.focus();
+          login_id.select();
+          login_id.value ="";
+          return;
+        }
+      }
+
+      if (login_id.value.length < 6 || login_id.value.length > 10) {
+        document.getElementById("id").innerHTML = "아이디를 6 ~ 10자 까지 입력해주세요.";
+        login_id.focus();
+        login_id.select();
+        return;
+      }
+
+      if(login_pw.value == ""){
+        document.getElementById("password").innerHTML = "비밀번호를 입력하세요";
+        login_pw.focus();
+        return;
+      }
+
+      for (var i = 0; i < login_pw.value.length; i++) {
+        ch = login_pw.value.charAt(i)
+        if (!(ch >= '0' && ch <= '9') && !(ch >= 'a' && ch <= 'z') && !(ch >= 'A' && ch <= 'Z') && !(ch == '_')) {
+          document.getElementById("password").innerHTML = "비밀번호는 대소문자 및 숫자, 특수문자(_)만 입력가능합니다.";
+          login_pw.focus();
+          login_pw.select();
+          login_pw.value ="";
+          return;
+        }
+      }
+
+      if (login_pw.value.length<6 || login_pw.value.length>10) {
+        document.getElementById("password").innerHTML = "패스워드를 6~10자 까지 입력해주세요.";
+        login_pw.focus();
+        login_pw.select();
+        return;
+      }
+
+      var samepass = 0;
+      var contipass = 0;
+      var chpa1;
+      var chpa2;
+
+      for(var j = 0; j < login_pw.value.length - 1; j++){
+        chpa1 = login_pw.value.charAt(j);
+        chpa2 = login_pw.value.charAt(j + 1);
+
+        if(chpa1 == chpa2){samepass += 1;}
+        else{samepass = 0;}
+
+        if(chpa1.charCodeAt(0) - chpa2.charCodeAt(0) == 1 || chpa2.charCodeAt(0) - chpa1.charCodeAt(0) == 1){contipass += 1;}
+        else{contipass = 0;}
+
+        if(samepass >= 3){
+          document.getElementById("password").innerHTML = "비밀번호에 동일 문자를 세 번 이상 사용할 수 없습니다.";
+          login_pw.focus();
+          login_pw.select();
+          login_pw.value ="";
+          return;
+        }
+
+        if(contipass >= 3){
+          document.getElementById("password").innerHTML = "비밀번호에 연속되는 문자를 세 번 이상 사용할 수 없습니다.";
+          login_pw.focus();
+          login_pw.select();
+          login_pw.value ="";
+          return;
+        }
+      }
+
+      if (login_pw.value != login_pw2.value) {
+        document.getElementById("password_chk").innerHTML = "패스워드가 일치하지않습니다";
+        login_pw.value =""
+        login_pw2.value =""
+        return;
+      }
+
+      if(login_name.value == ""){
+        document.getElementById("name").innerHTML = "이름을 입력하세요";
+        login_name.focus();
+        return;
+      }
+
+      if(login_pnum.value == ""){
+        document.getElementById("pnum").innerHTML = "전화번호를 입력하세요";
+        login_pnum.focus();
+        return;
+      }
+
+
+      if(login_email.value == ""){
+        document.getElementById("email").innerHTML = "이메일을 입력하세요";
+        login_email.focus();
+        return;
+      }
+
+
+      if (((login_email.value.indexOf('@')) <=0) && (login_email.value.indexOf('.')<=0)){
+        document.getElementById("email").innerHTML = "정상적인 이메일이 아닙니다.";
+        login_email.value = "";
+        login_email.focus();
+        return;
+      }
+
+      for (var i = 0; i < login_accn.value.length; i++) {
+        ch = login_accn.value.charAt(i)
+        if (!(ch >= '0' && ch <= '9') && !(ch == '-')) {
+          adocument.getElementById("account").innerHTML = "계좌번호는 숫자 및 특수문자(-)만 입력 가능합니다.";
+          login_accn.focus();
+          login_accn.select();
+          login_accn.value =""
+          return;
+        }
+      }
+
+      $.ajax({
+        type:"POST",     //페이지 이동시 넘어가는 값이 숨겨짐
+        url:"register.jsp",     //이동할 페이지
+
+        data: "memid="+login_id+"&mempw="+login_pw+"&memnm="+login_name+"&mempnum="+login_pnum+"
+         &mememail="+login_email+"&memaccb="+login_accb+"&memaccn"+login_accn+"&membirth"+login_birth,
+         dataType: "json",    //돌려받을 타입 JSON
+         success:function(data){   //성공시 가져오는 데이터를 data에 저장하여 사용
+             alert("DB 등록완료!");
+             window.opener.location.reload();
+             self.close();
+         },
+         error:function(jqXHR, textStatus, errorThrown){     //에러발생시 출력할 메세지
+             alert("에러 발생~~ \n" + textStatus + " : " + errorThrown);
+             self.close();
+             return
+         }
+     });
+   }
+
+   $(function(){
+     $(document).on("keyup", "input:text[numberOnly]",
+     function() {$(this).val( $(this).val().replace(/[^0-9]/gi,"") );});
+   });
+
+   function reset() {
+     var login_id  = document.getElementById("id");
+     var login_pw  = document.getElementById("password");
+     var login_pw2  = document.getElementById("password_chk");
+     var login_name  = document.getElementById("name");
+     var login_pnum = document.getElementById("pnum");
+     var login_email = document.getElementById("email");
+     var login_accb = document.getElementById("accountbank");
+     var login_accn = document.getElementById("account");
+     var login_birth = document.getElementById("birthday");
+
+     alert("초기화");
+     login_id.value =""
+     login_pw.value =""
+     login_pw2.value =""
+     login_name.value =""
+     login_pnum.value =""
+     login_email.value =""
+     login_accb.value = "";
+     login_accn.value = "";
+     login_birth.value ="";
+     return;
+   }
+
+   //아이디 중복확인 버튼 누를때
+   function idChk() {
+     var login_id = $("#id").val();
+     alert("중복확인"+login_id);
+
+      //AJAX(JSON)
+    $.ajax({
+      type:"GET",   //함께 이동하는 값이 url에 찍힘
+      url: "idchk.jsp",
+      data: {"memid":login_id},   //JSON형식으로 값 보내기
+      dataType: "JSON",
+         success: function(data){
+         console.log(data)   //console창에 찍어보기
+        //data 중  컬럼네임이 memid인 값이 ""일 때 = 받아온 값이 없을때 = DB에 존재하지 않음
+         if (data.memid == "") {
+           alert("사용가능한 아이디 입니다.");
+         } else {
+           alert( "이미 존재하는 아이디 입니다.");
+         }
+        },
+        error:function(request,status,error){
+          alert("code:"+request.status+"\n"+"message:"
+            +request.responseText+"\n"+"error:"+error);
+          }
+      });
+  }
+</script>
+  </head>
+  <body>
+    <header>
+      <p>Blueback Amusement Center for Music Games</p>
+      <!--헤더로 등장하는 사이트 로고의 문구다-->
+    </header>
+    <h1>회원가입</h1>
+    <fieldset>
+      <table border="0" id="jointable">
+        <tr>
+          <td>아이디</td>
+          <td class="text"><input type="text"  id="id" name="id" placeholder="아이디(6-12자)"/></td>
+          <td><button type="submit" id="id_chk" class="button3" onclick="idChk()">중복확인</button><br /></td>
+        </tr>
+
+        <tr>
+          <td>패스워드</td>
+          <td class="text">
+            <input type="password"  id="password" name="password" placeholder="패스워드"/><br />
+          </td>
+        </tr>
+
+        <tr>
+          <td>패스워드 확인</td>
+          <td class="text">
+            <input type="password"  id="password_chk" name="password_chk" placeholder="패스워드 확인"/><br />
+          </td>
+        </tr>
+
+        <tr>
+          <td>이름</td>
+          <td class="text"><input type="text"  id="name" placeholder="이름"/><br /></td>
+        </tr>
+
+        <tr>
+          <td>휴대폰</td>
+          <td class="text"><input type="tel"  id="pnum" placeholder="전화번호"/><br /></td>
+        </tr>
+
+        <tr>
+          <td>이메일</td>
+          <td class="text"><input type="email" id="email" placeholder="이메일" /><br /></td>
+        </tr>
+
+        <tr>
+          <td>계좌번호</td>
+          <td class="text">
+            <label><input type="radio" name="accountbank" id="우리" value="우리" checked="checked">우리</label>
+            <label><input type="radio" name="accountbank" id="신한" value="신한">신한</label>
+            <label><input type="radio" name="accountbank" id="국민" value="국민">국민</label>
+            <label><input type="radio" name="accountbank" id="농협" value="농협">농협</label>
+            <label><input type="radio" name="accountbank" id="하나" value="하나">하나</label>
+            <label><input type="radio" name="accountbank" id="기업" value="기업">기업</label>
+            <label><input type="radio" name="accountbank" id="외환" value="외환">외환</label>
+          </td>
+          <td>계좌번호: </td>
+          <td class="text"><input type="text" id="account"><br /></td>
+        </tr>
+
+        <tr>
+          <td>생일</td>
+          <td class="text"><input type="date" id="birthday"><br /></td>
+        </tr>
+
+        <tr>
+          <td></td>
+          <td colspan="2">
+            <a href="login.html" id="home"><button type="button" class="button3">로그인 화면으로</button></a>
+            <button type="button" id="reset" onclick="reset()">초기화</button>
+            <button type="button" id="join" class="button3" onclick="joinchk()">회원가입</button>
+          </td>
+        </tr>
+      </table>
+    </fieldset>
+    <footer>
+      <p>Contact Number: 010-2338-4342</p>
+      <p>Owner of copywrite of Page: &copy;Blueback Amusement Center</p>
+      <p>Owner of copywrite of games: &copy;KONAMI Digital Entertainment</p>
+      <p>Copywrite of background: freesource</p>
+  </footer><!--저작권 표시를 덧붙인다.-->
+  </body>
+</html>

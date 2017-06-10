@@ -1,0 +1,43 @@
+img
+{
+  position: relative;
+  -webkit-animation: movingImage linear 10s 1s 2 alternate;
+  -ms-animation: movingImage linear 10s 1s 2 alternate;
+  -moz-animation: movingImage linear 10s 1s 2 alternate;
+  animation: movingImage linear 10s 1s 2 alternate;
+}
+@-webkit-keyframes movingImage
+{
+  0% {opacity: 0; left: 50px; top: 0px;}
+  25% {opacity: 1; left: 0px; top: 50px;}
+  50% {opacity: 0; left: 50px; top: 100px;}
+  75% {opacity: 1; left: 100px; top: 50px;}
+  100% {opacity: 0; left: 50px; top: 0px;}
+}
+@-ms-keyframes movingImage
+{
+  0% {opacity: 0; left: 50px; top: 0px;}
+  25% {opacity: 1; left: 0px; top: 50px;}
+  50% {opacity: 0; left: 50px; top: 100px;}
+  75% {opacity: 1; left: 100px; top: 50px;}
+  100% {opacity: 0; left: 50px; top: 0px;}
+}
+@-moz-keyframes movingImage
+{
+  0% {opacity: 0; left: 50px; top: 0px;}
+  25% {opacity: 1; left: 0px; top: 50px;}
+  50% {opacity: 0; left: 50px; top: 100px;}
+  75% {opacity: 1; left: 100px; top: 50px;}
+  100% {opacity: 0; left: 50px; top: 0px;}
+}
+@keyframes movingImage
+{
+  0% {opacity: 0; left: 50px; top: 0px;}
+  25% {opacity: 1; left: 0px; top: 50px;}
+  50% {opacity: 0; left: 50px; top: 100px;}
+  75% {opacity: 1; left: 100px; top: 50px;}
+  100% {opacity: 0; left: 50px; top: 0px;}
+}
+/*대상 이미지가 다양한 브라우저로 접근해도 같은 애니메이션이 나오기 위해 여러 개를 적는다.
+대상 이미지는 다른 요소에 따라 위치가 정해지며 흐릿해졌다 뚜렷해졌다를 반복하며 마롬모꼴로 돌아간다.
+이 과정은 두 번 반복되며 전체 과정에서 속도는 변하지 않는다.*/

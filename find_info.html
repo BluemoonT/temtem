@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Find_info</title>
+    <link rel="stylesheet" type="text/css" href="default.css" media="screen"><!-- default.css에서 지정한 대로 html 요소를 꾸며줄 수 있다-->
+    <script src="jquery-1.11.0.min.js"></script>
+    <script type="text.javascript">
+    function idfind() {
+      var login_name  = $("#name").val();
+      var login_email = $("#email").val();
+
+      if(login_name == ""){
+        alert("이름을 입력하세요");
+        return;
+      }
+
+      if(login_email == ""){
+        alert("이메일을 입력하세요");
+        return;
+      }
+
+      if (((login_email.indexOf('@')) <=0) && (login_email.indexOf('.')<=0)){
+        alert("정상적인 이메일이 아닙니다.");
+        return;
+      }
+
+      //AJAX(JSON)
+      $.ajax({
+        type:"GET",
+        url:"find_id.jsp",
+        //JSON형식으로 값 넘겨줌
+        data: {"memnm": login_name,"mememail":login_email},
+        dataType: "JSON",
+        success: function(data) {
+          console.log(data);
+          if(data.memnm != "" && data.mememail !=""){
+            alert("아이디는 "+data.memid+"입니다.");
+          }else{
+            alert("입력하신 정보를 확인해 주세요");
+          }
+        },
+        error:function(request,status,error){
+            alert("code:"+request.status+"\n"+"message:"
+              +request.responseText+"\n"+"error:"+error);
+            }
+          });
+        };
+
+        function pwfind() {
+          alert("패스워드찾기");
+          var login_id  = $("#id").val();
+          var login_name  = $("#name").val();
+          var login_email = $("#email").val();
+
+          //아이디 입력여부 검사
+          if(login_id == ""){ //id의 값이 null이면 창 띄우고 커서 옮김
+            alert("아이디를 입력하세요");
+            login_id.focus();
+            return;
+          }
+
+
+          for (var i = 0; i < login_id.length; i++) {
+            ch = login_id.charAt(i);
+            if (!(ch >= '0' && ch <= '9') && !(ch >= 'a' && ch <= 'z') && !(ch >= 'A' && ch <= 'Z') && !(ch == '_')) {
+              alert("아이디는 대소문자, 숫자 및 특수문자(_)만 입력가능합니다.");
+              login_id.focus();
+              login_id.select();
+              login_id ="";
+              return;
+            }
+          }
+          //아이디 길이체크
+          if (login_id.length<6 || login_id.length>10) {
+            alert("아이디를 6~10자 까지 입력해주세요.");
+            login_id.focus();
+            login_id.select();
+            return;
+          }
+          //이름 입력여부 검사
+          if(login_name == ""){
+            alert("이름을 입력하세요");
+            return;
+          }
+          //이메일 입력여부 검사
+          if(login_email == ""){
+            alert("이메일을 입력하세요");
+            return;
+          }
+          //이메일 형식검사
+          if (((login_email.indexOf('@')) <=0) && (login_email.indexOf('.')<=0)){
+            alert("정상적인 이메일이 아닙니다.");
+            return;
+          };
+
+          //AJAX(JSON)
+          $.ajax({
+            type:"GET",
+            url:"find_pw.jsp",
+            data: {"memid": login_id,"memnm": login_name,"mememail":login_email},
+            dataType: "JSON",
+            success: function(data) {
+              console.log(data);
+              //alert("id:"+data.memid+",pw:" +data.mempw);
+              if(data.memnid != "" && data.memnm !=""&& data.mememail !=""){
+                alert("패스워드는 "+data.mempw+"입니다.");
+              }
+              else{
+                alert("입력하신 정보를 확인해 주세요");
+              }
+            },
+            error:function(request,status,error){
+              alert("code:"+request.status+"\n"+"message:"
+              +request.responseText+"\n"+"error:"+error);
+            }
+          });
+        }
+    </script>
+  </head>
+  <body>
+    <header>
+      <p>Blueback Amusement Center for Music Games</p>
+      <!--헤더로 등장하는 사이트 로고의 문구다-->
+    </header>
+    <fieldset>
+     <form class="floating-box">
+       <h1>아이디찾기</h1>
+       <hr>
+       <label>이름</label>
+       <input type="text"  id="name" placeholder="이름"/><br />
+       <label for="email">가입이메일</label>
+       <input type="text" id="email" placeholder="이메일" /><br />
+       <br />
+       <button type="button" class="button3" onclick="idfind()">아이디 찾기</button>
+      </form>
+
+      <form class="floating-box1">
+        <h1>패스워드 찾기</h1>
+        <hr>
+
+        <label for="id">아이디</label>
+        <input type="text"  id="id" name="id" placeholder="아이디(6-12자)"/><br />
+        <label>이름</label>
+        <input type="text"  id="name" placeholder="이름"/><br />
+        <label for="email">가입이메일</label>
+        <input type="text" id="email" placeholder="이메일" /><br />
+        <br />
+        <button type="button" class="button3" onclick="pwfind()">패스워드 찾기</button>
+      </form>
+      <a href="login.html"><button type="button" class="button3" id="login">로그인 화면으로 돌아가기</button></a>
+    </fieldset>
+    <footer>
+      <p>Contact Number: 010-2338-4342</p>
+      <p>Owner of copywrite of Page: &copy;Blueback Amusement Center</p>
+      <p>Owner of copywrite of games: &copy;KONAMI Digital Entertainment</p>
+      <p>Copywrite of background: freesource</p>
+  </footer><!--저작권 표시를 덧붙인다.-->
+  </body>
+</html>

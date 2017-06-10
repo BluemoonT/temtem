@@ -1,0 +1,33 @@
+a {text-decoration:none; color: blue }/*링크 색은 기본적으로 파랗다*/
+a:hover {text-decoration: underline; color: red; background-color: #ccffcc }/*링크에 커서를 댈 경우 배경의 색과 글자색이 달라지며 밑줄이 생긴다*/
+.home {padding: 14px 14px 14px 14px; margin: 14px 14px 14px 14px; font-size: 20px}/*home으로 돌아가는 링크가 있는 칸을 본문과 떨어지게 한다*/
+header/* header 부분을 꾸며주는 것이다*/
+{
+  border: 2px solid navy;/*헤더의 테두리를 진한 남색 실선으로 둘러준다*/
+  padding: 3px 20px;/* padding 값을 정해준다*/
+  font-size: 40px;/*폰트 사이즈를 늘려준다*/
+  width: 500px;/*헤더의 넓이는 500px*/
+  box-shadow: 25px 25px 50px dimgrey;/*헤더에 그림자가 지도록 한다*/
+  background: -webkit-gradient(linear, center top, center bottom, color-stop(15%, white), color-stop(50%, skyblue), color-stop(75%, cyan));/*구글 크롬, 사파리용*/
+  background: -ms-linear-gradient(top, white 15%, skyblue 50%, cyan 75%);/*인터넷 익스플로러용*/
+  background: -moz-linear-gradient(top center, white 15%, skyblue 50%, cyan 75%);/*파이어폭스용*/
+  background: linear-gradient(to bottom, white 15%, skyblue 50%, cyan 75%);/*기본 값*/
+  /*헤더 박스를 그라데이션으로 채운다. 다양한 웹브라우저에 적용되도록 다양하게 짜준다.*/
+  text-align: center;/*헤더 안의 내용을 가운데 정렬해준다*/
+  border-radius: 50px;/*헤더 박스를 둥글게 해준다*/
+  margin-bottom: 40px;/* 본문과의 거리를 정해준다 */
+}
+
+@media (max-width: 600px){footer {font-size: 10px; background-size: 40px; color: blue;}}
+@media (max-width: 500px){footer {font-size: 8px; background-size: 30px; color: navy;}}
+@media (min-width: 601px){footer {font-size: 12px; background-size: 50px; color: red;}}
+/*media의 사이즈에 따라 footer의 글자와 배경 그림의 크기가 달라진다. 또한 글자의 색도 달리진다*/
+
+footer
+{
+  background-image: url('star.png');
+  background-position: bottom right;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+/* media의 사이즈와는 관계없이 정해지는 요소를 꾸며준다*/

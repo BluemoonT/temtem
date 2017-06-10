@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>login</title>
+    <link rel="stylesheet" type="text/css" href="default.css" media="screen"><!-- default.css에서 지정한 대로 html 요소를 꾸며줄 수 있다-->
+    <script type="text/javascript">
+    function login() {
+      var login_id = $("#id").val();
+      var login_pw = $("#password").val();
+
+      if(login_id == ""){
+        alert("아이디를 입력하세요");
+        login_id.focus();
+        return;
+      };
+
+      for (var i = 0; i < login_id.length; i++) {
+        ch = login_id.charAt(i);
+        if (!(ch >= '0' && ch <= '9') && !(ch >= 'a' && ch <= 'z') && !(ch >= 'A' && ch <= 'Z') && !(ch == '_')) {
+           alert("아이디는 대문자, 소문자, 숫자, 특수기호(_)만 입력가능합니다.");
+           login_id.focus();
+           login_id.select();
+           login_id ="";
+           return;
+         }
+       };
+
+       if (login_id.length < 6 || login_id.length > 10) {
+         alert("아이디를 6~10자 까지 입력해주세요.");
+         login_id.focus();
+         login_id.select();
+         return;
+       };
+
+       if(login_pw == ""){
+         alert("비밀번호를 입력하세요");
+         login_pw.focus();
+         return;
+       };
+
+       for (var i = 0; i < login_pw.length; i++) {
+         ch = login_pw.charAt(i);
+         if (!(ch >= '0' && ch <= '9') && !(ch >= 'a' && ch <= 'z') && !(ch >= 'A' && ch <= 'Z') && !(ch == '_')) {
+            alert("비밀번호는 대문자, 소문자, 숫자, 특수기호(_)만 입력가능합니다.");
+            login_pw.focus();
+            login_pw.select();
+            login_id ="";
+            return;
+          }
+        };
+
+       if (login_pw.length < 6 || login_pw.length > 10) {
+         alert("패스워드를 6~10자 까지 입력해주세요.");
+         login_pw.focus();
+         login_pw.select();
+         return;
+       };
+
+       $.ajax({
+         type:"GET",
+         url:"login.jsp",
+          data: {"memid": login_id,"mempw": login_pw},
+          dataType: "JSON",
+          success: function(data) {
+            console.log(data);
+            //alert("id:"+data.memid+",pw:" +data.mempw);
+            if(data.memid != "" && data.mempw !=""){
+              alert("로그인 성공");
+              $("form").submit();
+            }else{
+              alert("아이디, 패스워드를 확인하세요");
+            }
+          },
+          error:function(request,status,error){
+            alert("code:"+request.status+"\n"+"message:"
+              +request.responseText+"\n"+"error:"+error);
+            }
+          });
+        };
+    </script>
+  </head>
+  <body>
+    <header>
+      <p>Blueback Amusement Center for Music Games</p>
+      <!--헤더로 등장하는 사이트 로고의 문구다-->
+    </header>
+    <h1>회원 로그인</h1>
+    <fieldset class="login">
+      <table class="login_table" border="0">
+        <tr>
+          <td>아이디</td>
+          <td><input type="text" id="id" name="id" placeholder="아이디(6-10자)"></td>
+          <td rowspan="2"><button type=submit id="main" onclick="login()">login</button></td>
+        </tr>
+
+        <tr>
+          <td>비밀번호</td>
+          <td><input type="password" id="password" name="password" placeholder="패스워드"></td>
+        </tr>
+
+        <tr>
+          <td colspan="3">
+            <input type="checkbox" name="saveid" id="saveid" />
+            <label for="saveid" >아이디저장</label>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3">
+            <a href="register.html"><button type="button" class="button3">회원가입</button></a>
+            <a href="find_info.html"><button type="button" class="button3">ID/PW찾기</button></a>
+          </td>
+        </tr>
+      </table>
+    </fieldset>
+    <form action="log.jsp" id="form">
+      <input type="hello.php" />
+    </form>
+    <div class="home">
+      <a href="index.php">Back to main page</a>
+    </div><!--첫번째 페이지로 돌아가기 위한 링크다-->
+    <footer>
+      <p>Contact Number: 010-2338-4342</p>
+      <p>Owner of copywrite of Page: &copy;Blueback Amusement Center</p>
+      <p>Owner of copywrite of games: &copy;KONAMI Digital Entertainment</p>
+      <p>Copywrite of background: freesource</p>
+    </footer><!--저작권 표시를 덧붙인다.-->
+  </body>
+</html>
